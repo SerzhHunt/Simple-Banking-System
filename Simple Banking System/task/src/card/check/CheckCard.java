@@ -1,15 +1,19 @@
-package card;
+package card.check;
 
-import java.math.BigInteger;
+import card.CardData;
+import terminal.Terminal;
+
 import java.util.List;
 import java.util.Scanner;
 
 public class CheckCard {
-    Scanner scanner = new Scanner(System.in);
+    private final Terminal terminal;
     private final CardData cardData;
+    private static final Scanner scanner = new Scanner(System.in);
 
     public CheckCard() {
         cardData = new CardData();
+        terminal = new Terminal(this);
     }
 
     public CardData logIntoAccount() {
@@ -17,26 +21,29 @@ public class CheckCard {
     }
 
     private CardData checkExistingCard() {
-        BigInteger cardNumber = scanner.nextBigInteger();
-        List<CardData> cardBase = this.cardData.getCardBase();
+        System.out.println("Enter your card number:");
+        String cardNumber = scanner.nextLine();
+        List<CardData> cardBase = cardData.getCardData();
 
         for (CardData card : cardBase) {
             if (card.getCardNumber().equals(cardNumber)) {
                 return checkPassword(card);
             }
         }
-        return null; // temporarily, I know it is not recommended to return null =)
+        return null; // temporarily.
     }
 
     private CardData checkPassword(CardData card) {
-        short pass = scanner.nextShort();
+        System.out.println("Enter your PIN:");
+        short pass = (short) Integer.parseInt(scanner.nextLine());
 
         if (card.getPassword() == pass) {
             System.out.println("You have successfully logged in!");
             return card;
         } else {
             System.out.println("Wrong card number or PIN!");
-            return checkExistingCard();
+            terminal.getTerminal();
+            return null;
         }
     }
 }

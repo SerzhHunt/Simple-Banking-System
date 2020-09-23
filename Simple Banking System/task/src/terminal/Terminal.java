@@ -1,49 +1,44 @@
 package terminal;
 
 import card.CardData;
-import card.CheckCard;
-import card.CreateCard;
+import card.account.Account;
+import card.account.AccountInfo;
+import card.check.CheckCard;
 
 import java.util.Scanner;
 
 public class Terminal {
+    private static final int MIN_RANGE_VALUE = 0;
+    private static final int MAX_RANGE_VALUE = 2;
     private final Scanner scanner = new Scanner(System.in);
-    private final CheckCard checkCard;
-    private final CreateCard createCard;
 
     public Terminal() {
-        checkCard = new CheckCard();
-        createCard = new CreateCard();
+    }
+
+    public Terminal(AccountInfo accountInfo) {
+    }
+
+    public Terminal(CheckCard checkCard) {
     }
 
     public void getTerminal() {
+        Account account = Account.getInstance();
         System.out.print("1. Create an account\n2. Log into account\n0. Exit\n");
-        int number = numberCheck(scanner.nextInt());
-        if (number == 1) {
-            createCard.createCard();
-        } else if (number == 2) {
-            CardData card = checkCard.logIntoAccount();
-            checkAccount(card);
-        } else {
-            System.out.println("Bye!");
-        }
-    }
+        int number = checkNumber(Integer.parseInt(scanner.nextLine()));
 
-    private void checkAccount(CardData card) {
-        System.out.print("1. Balance\n2. Log out\n0. Exit\n");
-        int number = numberCheck(scanner.nextInt());
         if (number == 1) {
-            System.out.printf("Balance:%d", card.getBalance());
-        } else if (number == 2) {
-            System.out.println("You have successfully logged out!");
+            account.createCard();
             getTerminal();
-        } else {
+        } else if (number == 2) {
+            CardData card = account.logIntoAccount();
+            account.getAccountInfo(card);
+        } else if (number == 0) {
             System.out.println("Bye!");
         }
     }
 
-    private int numberCheck(int number) {
-        if (number >= 0 && number <= 2) {
+    private int checkNumber(int number) {
+        if (number >= MIN_RANGE_VALUE && number <= MAX_RANGE_VALUE) {
             return number;
         }
         return 0;
