@@ -1,19 +1,16 @@
 package card.check;
 
 import card.CardData;
-import terminal.Terminal;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class CheckCard {
-    private final Terminal terminal;
     private final CardData cardData;
     private static final Scanner scanner = new Scanner(System.in);
 
     public CheckCard() {
         cardData = new CardData();
-        terminal = new Terminal(this);
     }
 
     public CardData logIntoAccount() {
@@ -30,7 +27,7 @@ public class CheckCard {
                 return checkPassword(card);
             }
         }
-        return null; // temporarily.
+        return checkPassword(cardData); //strange solution, but works.
     }
 
     private CardData checkPassword(CardData card) {
@@ -42,7 +39,6 @@ public class CheckCard {
             return card;
         } else {
             System.out.println("Wrong card number or PIN!");
-            terminal.getTerminal();
             return null;
         }
     }
