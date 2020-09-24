@@ -1,5 +1,7 @@
 package card;
 
+import card.check.LuhnAlgorithm;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -10,9 +12,11 @@ public class CreateCard {
     private static final short MAX_RANGE_PASSWORD_CARD = 10000;
     private static final String IIN = "400000";
     private final CardData cardData;
+    private final LuhnAlgorithm luhnAlgorithm;
 
     public CreateCard() {
         cardData = new CardData();
+        luhnAlgorithm = new LuhnAlgorithm();
     }
 
     public CardData getNewCard() {
@@ -26,10 +30,14 @@ public class CreateCard {
     }
 
     private String generateCardNumber() {
-        long generated = ThreadLocalRandom
+        long generatedNumber = ThreadLocalRandom
                 .current()
                 .nextLong(MIN_RANGE_NUMBER_CARD, MAX_RANGE_NUMBER_CARD);
-        return IIN + generated;
+        if (luhnAlgorithm.getCreditCardValidation(IIN + generatedNumber)) {
+            return IIN + generatedNumber;
+        } else {
+            return generateCardNumber();
+        }
     }
 
     private short generatePassword() {
