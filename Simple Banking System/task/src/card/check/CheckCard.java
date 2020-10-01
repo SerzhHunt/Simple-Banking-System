@@ -1,16 +1,16 @@
 package card.check;
 
 import card.CardData;
+import db.check.ExistingCard;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class CheckCard {
-    private final CardData cardData;
+    private final ExistingCard existingCard;
     private static final Scanner scanner = new Scanner(System.in);
 
     public CheckCard() {
-        cardData = new CardData();
+        existingCard = new ExistingCard();
     }
 
     public CardData logIntoAccount() {
@@ -20,23 +20,16 @@ public class CheckCard {
     private CardData checkExistingCard() {
         System.out.println("Enter your card number:");
         String cardNumber = scanner.nextLine();
-        List<CardData> cardBase = cardData.getCardData();
-
-        for (CardData card : cardBase) {
-            if (card.getCardNumber().equals(cardNumber)) {
-                return checkPassword(card);
-            }
-        }
-        return checkPassword(cardData); //strange solution, but works.
+        return checkPassword(existingCard.checkExistingCard(cardNumber));
     }
 
-    private CardData checkPassword(CardData card) {
+    private CardData checkPassword(String cardNumber) {
         System.out.println("Enter your PIN:");
-        short pass = (short) Integer.parseInt(scanner.nextLine());
+        String pin = scanner.nextLine();
 
-        if (card.getPassword() == pass) {
+        if (existingCard.checkExistingPin(cardNumber).equals(pin)) {
             System.out.println("You have successfully logged in!");
-            return card;
+            return new CardData(cardNumber, pin);
         } else {
             System.out.println("Wrong card number or PIN!");
             return null;
