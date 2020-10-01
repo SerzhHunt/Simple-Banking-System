@@ -1,42 +1,25 @@
 package card;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class CardData {
-    private static final List<CardData> cardBase = new ArrayList<>();
-    private String cardNumber;
-    private short password;
-    private long balance;
+    private final String cardNumber;
+    private final String password;
+    private final int balance;
 
-    public CardData() {
-
-    }
-
-    public CardData(String cardNumber, short password) {
+    public CardData(String cardNumber, String password) {
         this.cardNumber = cardNumber;
         this.password = password;
         this.balance = 0;
-    }
-
-    public List<CardData> getCardData() {
-        return cardBase;
-    }
-
-    public void addCardToBase(CardData card) {
-        cardBase.add(card);
     }
 
     public String getCardNumber() {
         return cardNumber;
     }
 
-    public short getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public long getBalance() {
+    public int getBalance() {
         return balance;
     }
 }
